@@ -422,6 +422,13 @@
         <tbody></tbody>
       </table>
       <div class="error-msg" id="err7">모든 문항에 응답해 주세요.</div>
+      <div class="consent-box" style="margin-top: 24px;">
+        <strong>설문에 끝까지 참여해 주셔서 진심으로 감사합니다.</strong><br>
+        사례품(상품) 발송을 위해 아래에 휴대전화 번호를 입력해 주세요. (수집된 번호는 상품 발송 목적 외에 사용되지 않으며 발송 후 즉시 파기됩니다.)
+        <div style="margin-top: 12px;">
+          <input type="tel" id="phone" placeholder="예: 010-1234-5678" style="width: 100%; max-width: 280px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem;" />
+        </div>
+      </div>
       <div class="btn-row">
         <button class="btn-secondary" onclick="prevStep(7)">이전</button>
         <button class="btn-primary" id="submitBtn" onclick="submitSurvey()">설문 제출</button>
@@ -643,7 +650,8 @@
         orientation: getRadio("orientation"),
         counseling_exp: getRadio("counseling_exp"),
         check_content: getRadio("check_content"),
-        manip_check: getRadio("manip_check")
+        manip_check: getRadio("manip_check"),
+        phone: document.getElementById("phone").value.trim()
       };
       for (let i = 1; i <= 12; i++) finalRecord[`out_${i}`] = getRadio(`out_${i}`);
       for (let i = 1; i <= 8; i++) finalRecord[`disc_${i}`] = getRadio(`disc_${i}`);
