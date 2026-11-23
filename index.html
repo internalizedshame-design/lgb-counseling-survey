@@ -234,7 +234,10 @@
   <div class="container">
     <div class="card">
       <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
-      <div class="muted" id="stepIndicator">1 / 7 단계</div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="muted" id="stepIndicator">1 / 7 단계</div>
+        <button type="button" onclick="fillTestData()" style="padding:4px 10px; font-size:0.8rem; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc; color:#475569; cursor:pointer;">테스트 자동 채우기</button>
+      </div>
     </div>
 
     <!-- STEP 1: 연구 참여 동의서 -->
@@ -704,6 +707,28 @@
         <strong>저장 상태:</strong> ${sheetStatus}
       `;
       showStep("Done");
+    }
+
+    function fillTestData() {
+      const setRadio = (name, val) => {
+        const el = document.querySelector(`input[name="${name}"][value="${val}"]`);
+        if (el) el.checked = true;
+      };
+      setRadio("consent", "agree");
+      setRadio("gender", "시스젠더 남성");
+      document.getElementById("age").value = "25";
+      document.getElementById("region").value = "서울특별시";
+      setRadio("orientation", "동성애");
+      setRadio("counseling_exp", "있음");
+      const checkRadios = document.querySelectorAll('input[name="check_content"]');
+      if (checkRadios.length) checkRadios[0].checked = true;
+      setRadio("manip_check", "3");
+      for (let i = 1; i <= 12; i++) setRadio(`out_${i}`, "4");
+      for (let i = 1; i <= 8; i++) setRadio(`disc_${i}`, "3");
+      for (let i = 1; i <= 15; i++) setRadio(`rej_${i}`, "3");
+      const phoneEl = document.getElementById("phone");
+      if (phoneEl) phoneEl.value = "010-0000-0000";
+      alert("테스트용 응답이 자동으로 채워졌습니다. '다음' 및 '설문 제출'을 눌러 테스트해 보세요.");
     }
   </script>
 </body>
