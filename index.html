@@ -282,6 +282,30 @@
         <input type="number" id="age" min="18" max="99" placeholder="예: 25" />
       </div>
       <div class="q-block">
+        <div class="q-title">2-1. 현재 거주 지역을 선택해 주세요.</div>
+        <select id="region" style="width: 100%; max-width: 280px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; background: #fff;">
+          <option value="">-- 지역 선택 --</option>
+          <option value="서울특별시">서울특별시</option>
+          <option value="경기도">경기도</option>
+          <option value="인천광역시">인천광역시</option>
+          <option value="부산광역시">부산광역시</option>
+          <option value="대구광역시">대구광역시</option>
+          <option value="대전광역시">대전광역시</option>
+          <option value="광주광역시">광주광역시</option>
+          <option value="울산광역시">울산광역시</option>
+          <option value="세종특별자치시">세종특별자치시</option>
+          <option value="강원특별자치도">강원특별자치도</option>
+          <option value="충청북도">충청북도</option>
+          <option value="충청남도">충청남도</option>
+          <option value="전북특별자치도">전북특별자치도</option>
+          <option value="전라남도">전라남도</option>
+          <option value="경상북도">경상북도</option>
+          <option value="경상남도">경상남도</option>
+          <option value="제주특별자치도">제주특별자치도</option>
+          <option value="해외/기타">해외 / 기타</option>
+        </select>
+      </div>
+      <div class="q-block">
         <div class="q-title">3. 귀하의 성적 지향을 선택해 주세요.</div>
         <div class="options-col">
           <label class="opt"><input type="radio" name="orientation" value="이성애" /> 이성애자</label>
@@ -569,9 +593,10 @@
       if (n === 2) {
         const gender = getRadio("gender");
         const age = document.getElementById("age").value;
+        const region = document.getElementById("region").value;
         const orientation = getRadio("orientation");
         const exp = getRadio("counseling_exp");
-        if (!gender || !age || !orientation || !exp) {
+        if (!gender || !age || !region || !orientation || !exp) {
           document.getElementById("err2").style.display = "block"; return;
         }
         document.getElementById("err2").style.display = "none";
@@ -647,6 +672,7 @@
         assigned_scenario: assignedScenario,
         gender: getRadio("gender"),
         age: document.getElementById("age").value,
+        region: document.getElementById("region").value,
         orientation: getRadio("orientation"),
         counseling_exp: getRadio("counseling_exp"),
         check_content: getRadio("check_content"),
