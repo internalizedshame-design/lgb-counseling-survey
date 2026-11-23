@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>심리상담 연구 설문지</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --danger: #dc2626;
+      --success: #059669;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .container {
+      max-width: 780px;
+      margin: 32px auto;
+      padding: 0 16px 48px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 32px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+      margin-bottom: 20px;
+    }
+    h1 { font-size: 1.5rem; margin: 0 0 8px; }
+    h2 { font-size: 1.25rem; margin: 0 0 14px; color: #111827; }
+    h3 { font-size: 1.05rem; margin: 20px 0 10px; }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--muted); font-size: 0.92rem; }
+    .progress-wrap {
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .progress-bar {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.25s ease;
+    }
+    .step { display: none; }
+    .step.active { display: block; }
+    .consent-box {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+    }
+    .consent-box ul { margin: 8px 0 0 18px; padding: 0; }
+    .consent-box li { margin-bottom: 6px; }
+    .scenario-box {
+      background: var(--primary-light);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin: 16px 0;
+      font-size: 0.98rem;
+    }
+    .q-block {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .q-block:last-child { border-bottom: none; }
+    .q-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .options-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .options-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    label.opt {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      font-size: 0.94rem;
+    }
+    label.opt:hover { background: #f9fafb; border-color: #c7d2fe; }
+    input[type="radio"], input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    input[type="number"], input[type="text"], select {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      width: 100%;
+      max-width: 280px;
+    }
+    .scale-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .scale-table th, .scale-table td {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 6px;
+      text-align: center;
+    }
+    .scale-table th.item-col, .scale-table td.item-col {
+      text-align: left;
+      width: 46%;
+      padding-right: 12px;
+    }
+    .scale-legend {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.88rem;
+      margin-bottom: 14px;
+    }
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    button {
+      padding: 11px 22px;
+      border-radius: 9px;
+      border: none;
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: #e5e7eb; color: #374151; }
+    .btn-secondary:hover { background: #d1d5db; }
+    .error-msg {
+      color: var(--danger);
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: none;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 0.82rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 640px) {
+      .card { padding: 20px 16px; }
+      .scale-table th.item-col, .scale-table td.item-col { width: 38%; font-size: 0.84rem; }
+      .scale-table th, .scale-table td { padding: 8px 2px; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="muted" id="stepIndicator">1 / 7 단계</div>
+    </div>
+
+    <!-- STEP 1: 연구 참여 동의서 -->
+    <div class="card step active" id="step1">
+      <span class="badge">연구 참여 안내 및 동의서</span>
+      <h1>심리상담 인식 및 기대에 관한 연구</h1>
+      <div class="consent-box">
+        <p>안녕하십니까. 본 연구는 성인의 심리상담자 인식 및 자기개방 기대에 영향을 미치는 요인을 알아보기 위해 진행됩니다.</p>
+        <ul>
+          <li><strong>소요 시간:</strong> 약 5~10분 내외</li>
+          <li><strong>참여 내용:</strong> 가상의 상담자 소개문을 읽고 관련 문항에 응답하게 됩니다.</li>
+          <li><strong>비밀 보장:</strong> 수집된 모든 자료는 익명으로 처리되며, 연구 목적 외에는 절대 사용되지 않습니다.</li>
+          <li><strong>자발적 참여:</strong> 귀하는 원치 않을 경우 언제든지 설문을 중단하실 수 있으며, 이로 인한 불이익은 전혀 없습니다.</li>
+        </ul>
+      </div>
+      <div class="q-block">
+        <div class="q-title">위 안내 사항을 충분히 읽고 이해하였으며, 본 연구에 자발적으로 참여하는 것에 동의하십니까?</div>
+        <div class="options-col">
+          <label class="opt"><input type="radio" name="consent" value="agree" /> 예, 연구 참여에 동의합니다.</label>
+          <label class="opt"><input type="radio" name="consent" value="disagree" /> 아니오, 동의하지 않습니다. (설문 종료)</label>
+        </div>
+      </div>
+      <div class="error-msg" id="err1">참여 동의 여부를 선택해 주세요.</div>
+      <div class="btn-row">
+        <span></span>
+        <button class="btn-primary" onclick="nextStep(1)">다음</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: 인구통계학적 문항 -->
+    <div class="card step" id="step2">
+      <span class="badge">기본 정보</span>
+      <h2>인구통계학적 문항</h2>
+      <div class="q-block">
+        <div class="q-title">1. 귀하의 성별 정체성을 선택해 주세요.</div>
+        <div class="options-col">
+          <label class="opt"><input type="radio" name="gender" value="시스젠더 남성" /> 시스젠더 남성 (출생 시 지정 성별: 남성)</label>
+          <label class="opt"><input type="radio" name="gender" value="시스젠더 여성" /> 시스젠더 여성 (출생 시 지정 성별: 여성)</label>
+          <label class="opt"><input type="radio" name="gender" value="트랜스젠더/논바이너리/기타" /> 트랜스젠더 / 논바이너리 / 기타</label>
+          <label class="opt"><input type="radio" name="gender" value="응답거부" /> 응답하지 않음</label>
+        </div>
+      </div>
+      <div class="q-block">
+        <div class="q-title">2. 귀하의 만 연령을 입력해 주세요.</div>
+        <input type="number" id="age" min="18" max="99" placeholder="예: 25" />
+      </div>
+      <div class="q-block">
+        <div class="q-title">3. 귀하의 성적 지향을 선택해 주세요.</div>
+        <div class="options-col">
+          <label class="opt"><input type="radio" name="orientation" value="이성애" /> 이성애자</label>
+          <label class="opt"><input type="radio" name="orientation" value="동성애" /> 동성애자 (게이/레즈비언)</label>
+          <label class="opt"><input type="radio" name="orientation" value="양성애" /> 양성애자</label>
+          <label class="opt"><input type="radio" name="orientation" value="기타" /> 기타 (무성애, 범성애 등)</label>
+          <label class="opt"><input type="radio" name="orientation" value="응답거부" /> 응답하지 않음</label>
+        </div>
+      </div>
+      <div class="q-block">
+        <div class="q-title">4. 이전에 전문 심리상담을 받아본 경험이 있습니까?</div>
+        <div class="options-col">
+          <label class="opt"><input type="radio" name="counseling_exp" value="있음" /> 예, 있습니다.</label>
+          <label class="opt"><input type="radio" name="counseling_exp" value="없음" /> 아니오, 없습니다.</label>
+        </div>
+      </div>
+      <div class="error-msg" id="err2">모든 문항에 응답해 주세요.</div>
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="prevStep(2)">이전</button>
+        <button class="btn-primary" onclick="nextStep(2)">다음</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: 시나리오 제시문 (무선할당 A/B/C) -->
+    <div class="card step" id="step3">
+      <span class="badge">시나리오</span>
+      <h2>상담자 소개문</h2>
+      <p>최근 대인관계의 어려움과 정서적 스트레스로 인해 우울감과 불안감을 느끼고 있습니다. 이러한 경험 중에는 자신의 성적지향과 관련된 고민도 포함되어 있으며, 이를 가까운 사람들에게조차 이야기해도 될지 망설이고 있습니다.</p>
+      <p>이에 심리상담을 받고자 당신은 인터넷 검색을 통해 거주지 인근의 상담센터 홈페이지에 접속하였고, 상담자의 프로필을 확인하고 있습니다. 아래에 제시되는 내용은 귀하가 만나게 될 상담자의 실제 소개문입니다.</p>
+      <p><strong>당신이 자신의 마음속 깊은 고민을 털어놓을 상담자를 직접 선택하고 있는 상황이라고 상상하며, 상담자의 소개문을 주의 깊게 읽어 주시기 바랍니다.</strong></p>
+
+      <div class="scenario-box" id="scenarioText"></div>
+
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="prevStep(3)">이전</button>
+        <button class="btn-primary" onclick="nextStep(3)">다음</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: 시나리오 내용확인 & 조작점검 -->
+    <div class="card step" id="step4">
+      <span class="badge">시나리오 확인</span>
+      <h2>2-1. 시나리오 내용확인 및 조작점검</h2>
+      <div class="q-block">
+        <div class="q-title">Q1. 방금 읽으신 상담자의 소개문 내용 중, 성소수자와 관련된 설명으로 가장 알맞은 것은 무엇입니까?</div>
+        <div class="options-col">
+          <label class="opt"><input type="radio" name="check_content" value="1" /> 1. 특정 집단에 대한 언급 없이, 모든 내담자를 존중한다고만 되어 있었다.</label>
+          <label class="opt"><input type="radio" name="check_content" value="2" /> 2. 성소수자(LGB)를 향한 차별 반대와 존중하는 태도가 명시되어 있었다.</label>
+          <label class="opt"><input type="radio" name="check_content" value="3" /> 3. 상담자 본인 스스로가 LGB 공동체의 일원(당사자)이라고 명시되어 있었다.</label>
+          <label class="opt"><input type="radio" name="check_content" value="4" /> 4. 성소수자 상담에 대한 전문적인 학위와 수료증이 있다고 명시되어 있었다.</label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-title">Q2. 귀하는 방금 확인한 상담자가 성소수자(LGB) 내담자에게 얼마나 수용적이고 우호적일 것이라고 생각하십니까?</div>
+        <div class="muted" style="margin-bottom:8px;">1 (전혀 우호적이지 않을 것이다) ~ 10 (매우 우호적일 것이다)</div>
+        <div class="options-row" id="manipScale"></div>
+      </div>
+      <div class="error-msg" id="err4">모든 문항에 응답해 주세요.</div>
+      <div class="btn-row">
+        <span></span>
+        <button class="btn-primary" onclick="nextStep(4)">다음</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: 드러내기 척도 -->
+    <div class="card step" id="step5">
+      <span class="badge">척도 1</span>
+      <h2>3. 드러내기 척도</h2>
+      <p>다음에 제시된 사람들에게 어느 정도로 커밍아웃 했는지 표시해 주십시오. 되도록 모든 질문에 답하여 주십시오. 만약 해당 사항이 없으면, <strong>0</strong>으로 표시하시면 됩니다.</p>
+      <div class="scale-legend">
+        <strong>1</strong> = 내 성적 지향에 대해 전혀 모른다 &nbsp;|&nbsp;
+        <strong>2</strong> = 알지도 모르지만 이야기해 본 적 전혀 없음 &nbsp;|&nbsp;
+        <strong>3</strong> = 아마 알고 있을 것 같지만 이야기해 본 적 전혀 없음 &nbsp;|&nbsp;
+        <strong>4</strong> = 아마 알고 있을 것이지만 이야기해 본 적 거의 없음 &nbsp;|&nbsp;
+        <strong>5</strong> = 확실히 알고 있지만 거의 이야기하지 않음 &nbsp;|&nbsp;
+        <strong>6</strong> = 확실히 알고 있으며 가끔 이야기함 &nbsp;|&nbsp;
+        <strong>7</strong> = 확실히 알고 있으며 자유롭게 이야기할 수 있음 &nbsp;|&nbsp;
+        <strong>0</strong> = 해당사항 없음
+      </div>
+      <table class="scale-table" id="outnessTable">
+        <thead>
+          <tr>
+            <th class="item-col">대상</th>
+            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>0</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="error-msg" id="err5">모든 항목에 응답해 주세요.</div>
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="prevStep(5)">이전</button>
+        <button class="btn-primary" onclick="nextStep(5)">다음</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: 자기 개방에 대한 결과기대 척도 -->
+    <div class="card step" id="step6">
+      <span class="badge">척도 2</span>
+      <h2>4. 자기 개방에 대한 결과기대 척도</h2>
+      <p>아래 질문에 대해 여러분이 어떻게 느끼시는지를 1~5점으로 평가해서 해당 점수에 체크해 주십시오.</p>
+      <table class="scale-table" id="disclosureTable">
+        <thead>
+          <tr>
+            <th class="item-col">문항 내용</th>
+            <th>1<br><span class="muted">전혀<br>그렇지 않다</span></th>
+            <th>2<br><span class="muted">그렇지<br>않다</span></th>
+            <th>3<br><span class="muted">보통<br>이다</span></th>
+            <th>4<br><span class="muted">그렇다</span></th>
+            <th>5<br><span class="muted">매우<br>그렇다</span></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="error-msg" id="err6">모든 문항에 응답해 주세요.</div>
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="prevStep(6)">이전</button>
+        <button class="btn-primary" onclick="nextStep(6)">다음</button>
+      </div>
+    </div>
+
+    <!-- STEP 7: 한국 거부민감성 척도 -->
+    <div class="card step" id="step7">
+      <span class="badge">척도 3</span>
+      <h2>5. 한국 거부민감성 척도</h2>
+      <p>다음은 중요한 타인 또는 여러 대인관계에서 일어날 수 있는 상황에 대해, 여러분이 어떻게 느끼고 생각하는가를 알아보는 질문들입니다. 각 질문을 주의 깊게 읽은 후, 자신을 가장 잘 나타내는 숫자에 표시해 주시기 바랍니다. (제시된 상황에 대한 경험이 없다면 만일 그러한 상황에 처할 경우를 상상하면서 응답해 주시기 바랍니다.)</p>
+      <table class="scale-table" id="rejectionTable">
+        <thead>
+          <tr>
+            <th class="item-col">문항 내용</th>
+            <th>1<br><span class="muted">전혀<br>그렇지 않다</span></th>
+            <th>2<br><span class="muted">그렇지<br>않다</span></th>
+            <th>3<br><span class="muted">보통<br>이다</span></th>
+            <th>4<br><span class="muted">그렇다</span></th>
+            <th>5<br><span class="muted">매우<br>그렇다</span></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="error-msg" id="err7">모든 문항에 응답해 주세요.</div>
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="prevStep(7)">이전</button>
+        <button class="btn-primary" onclick="submitSurvey()">설문 제출</button>
+      </div>
+    </div>
+
+    <!-- 완료 화면 -->
+    <div class="card step" id="stepDone">
+      <span class="badge" style="background:#ecfdf5; color:#059669;">제출 완료</span>
+      <h2>설문에 참여해 주셔서 감사합니다.</h2>
+      <p>귀하의 소중한 응답이 정상적으로 기록되었습니다.</p>
+      <div class="consent-box" id="summaryBox"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="downloadCSV()">응답 데이터 CSV 다운로드</button>
+        <button class="btn-secondary" onclick="location.reload()">새로 시작하기</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 1. 시나리오 A/B/C 무선할당 (1:1:1 무작위)
+    const scenarios = {
+      A: `안녕하세요. 저는 심리학 전공 석사학위를 취득하고, 상담심리전문가 자격을 보유한 심리상담자입니다.<br><br>
+          저는 다년간 성인을 대상으로 다양한 심리적 문제들을 두루 다루고 있습니다. 저는 내담자에게 가장 적절하고 효과적인 도움을 제공하기 위해 최신 상담 연구와 전문 지식을 지속적으로 학습하고 있습니다.<br><br>
+          저는 심리상담을 '변화를 향해 함께 나아가는 협력적 관계'로 여깁니다. 따라서 내담자와 합의된 상담목표를 존중하고 변화를 향해 함께 노력하는 과정에서 내담자와 함께하고자 합니다. 또한, 저는 상담 윤리를 엄격히 준수하며, 다양한 배경을 이유로 내담자를 차별하지 않고 있는 그대로 존중하는 태도를 중요하게 생각합니다.`,
+      B: `안녕하세요. 저는 심리학 전공 석사학위를 취득하고, 상담심리전문가 자격을 보유한 심리상담자입니다.<br><br>
+          저는 다년간 성인을 대상으로 다양한 심리적 문제들을 두루 다루고 있습니다. 저는 내담자에게 가장 적절하고 효과적인 도움을 제공하기 위해 최신 상담 연구와 전문 지식을 지속적으로 학습하고 있습니다.<br><br>
+          저는 심리상담을 '변화를 향해 함께 나아가는 협력적 관계'로 여깁니다. 따라서 내담자와 합의된 상담목표를 존중하고 변화를 향해 함께 노력하는 과정에서 내담자와 함께하고자 합니다. 또한, 저는 상담 윤리를 엄격히 준수하며, 다양한 배경을 이유로 내담자를 차별하지 않고 있는 그대로 존중하는 태도를 중요하게 생각합니다.<br><br>
+          <strong>특히, 저는 내담자의 성적 지향이나 성별 정체성을 그 사람의 한 부분으로 보며, 성 소수자 내담자를 지지합니다. 이를 위해 성소수자 관련 워크숍과 행사에 주기적으로 참석하고 있습니다.</strong>`,
+      C: `안녕하세요. 저는 심리학 전공 석사학위를 취득하고, 상담심리전문가 자격을 보유한 심리상담자입니다.<br><br>
+          저는 다년간 성인을 대상으로 다양한 심리적 문제들을 두루 다루고 있습니다. 저는 내담자에게 가장 적절하고 효과적인 도움을 제공하기 위해 최신 상담 연구와 전문 지식을 지속적으로 학습하고 있습니다.<br><br>
+          저는 심리상담을 '변화를 향해 함께 나아가는 협력적 관계'로 여깁니다. 따라서 내담자와 합의된 상담목표를 존중하고 변화를 향해 함께 노력하는 과정에서 내담자와 함께하고자 합니다. 또한, 저는 상담 윤리를 엄격히 준수하며, 다양한 배경을 이유로 내담자를 차별하지 않고 있는 그대로 존중하는 태도를 중요하게 생각합니다.<br><br>
+          <strong>특히, 저는 LGB 공동체의 일원으로써, 사회적 시선 속에서 정체성을 숨기거나 자신을 온전히 드러내지 못해 겪는 고립감, 그리고 성소수자로서 살아가며 겪게 되는 현실적인 고민과 고충들에 깊게 공감하고 있습니다.</strong>`
+    };
+
+    const keys = ["A", "B", "C"];
+    const assignedScenario = keys[Math.floor(Math.random() * keys.length)];
+    document.getElementById("scenarioText").innerHTML = scenarios[assignedScenario];
+
+    // 조작점검 1~10점 생성
+    const manipWrap = document.getElementById("manipScale");
+    for (let i = 1; i <= 10; i++) {
+      manipWrap.innerHTML += `<label class="opt"><input type="radio" name="manip_check" value="${i}" /> ${i}</label>`;
+    }
+
+    // 드러내기 척도 12문항
+    const outnessItems = [
+      "1. 어머니", "2. 아버지", "3. 형제자매", "4. 친척",
+      "5. 만난 지 얼마 안 된 이성애자 친구", "6. 직장/학교 동료", "7. 직장 상사",
+      "8. 내가 믿는 종교단체의 동료들", "9. 내가 믿는 종교단체의 지도자들 (예: 목사님, 신부님, 스님)",
+      "10. 처음 만난/새로 사귄 사람", "11. 동성애자 친구", "12. 오래된 이성애자 친구"
+    ];
+    const outnessTbody = document.querySelector("#outnessTable tbody");
+    outnessItems.forEach((label, idx) => {
+      const vals = [1, 2, 3, 4, 5, 6, 7, 0];
+      const cells = vals.map(v => `<td><input type="radio" name="out_${idx+1}" value="${v}" /></td>`).join("");
+      outnessTbody.innerHTML += `<tr><td class="item-col">${label}</td>${cells}</tr>`;
+    });
+
+    // 자기 개방 결과기대 척도 8문항
+    const disclosureItems = [
+      "1. 상담자에게 당신의 사적인 이야기를 하는 것이 위험스러울까요?",
+      "2. 만약 당신이 지금까지 아무에게도 말한 적이 없는 매우 사적인 일을 상담자에게 말한다면 불안하게 느껴질까요?",
+      "3. 만약 당신에게 슬프거나 괴로운 일이 생긴다면, 그 문제를 상담자에게 이야기하는 것이 도움이 될 것 같습니까?",
+      "4. 상담자에게 당신의 숨겨둔 감정을 드러내는 것이 위험할 것 같습니까?",
+      "5. 만약 당신이 상담자를 찾아가 속 이야기를 한다면 주변 사람들이 어떻게 생각할지가 걱정되십니까?",
+      "6. 상담자에게 자신의 속 이야기를 하는 것은 도움이 될까요?",
+      "7. 만약 당신이 상담자에게 슬픔이나 불안의 감정을 드러낸다면 기분이 더 나아질까요?",
+      "8. 만약 당신이 고민 중인 문제를 상담자에게 터놓는다면 실질적인 도움을 받을 것 같습니까?"
+    ];
+    const discTbody = document.querySelector("#disclosureTable tbody");
+    disclosureItems.forEach((label, idx) => {
+      const cells = [1,2,3,4,5].map(v => `<td><input type="radio" name="disc_${idx+1}" value="${v}" /></td>`).join("");
+      discTbody.innerHTML += `<tr><td class="item-col">${label}</td>${cells}</tr>`;
+    });
+
+    // 한국 거부민감성 척도 15문항
+    const rejectionItems = [
+      "1. 관계가 점점 멀어진다고 생각되면 짜증이 나거나 화가 난다.",
+      "2. 나의 데이트 신청이 거절당한다면 짜증이 나거나 화가 난다.",
+      "3. 결국 나를 떠날 것이라 생각되면 짜증이 나거나 화가 난다.",
+      "4. 거부 당했다고 생각되면 화가 난다.",
+      "5. 다퉜을 때, 내 사과를 받아 주지 않을 것이라 생각되면 짜증이 나거나 화가 난다.",
+      "6. 나의 데이트 신청이 거절당할까 봐 불안하다.",
+      "7. SNS나 메신저로 연락을 했을 때 답이 오지 않을까 봐 걱정되거나 불안하다.",
+      "8. 배신당하거나 버려질까 봐 걱정되거나 불안하다.",
+      "9. 거부당했다고 생각되면 다시는 제안하지 않을 것이다.",
+      "10. 거부당했다고 생각되면 앞으로는 깊은 관계를 맺기 힘들 것이다.",
+      "11. 거부당할 것이라 생각되면 거리감이 생긴다.",
+      "12. 거부당할까 봐 관계를 먼저 끊으려는 경향이 있다.",
+      "13. 나를 보고 인사를 하지 않고 지나간다면 거부당했다는 생각을 할 것이다.",
+      "14. 내 말에 귀 기울여 주지 않는다면 거부당했다는 생각을 할 것이다.",
+      "15. 내 앞에서 문을 쾅 닫고 나간다면 거부당했다는 생각이 든다."
+    ];
+    const rejTbody = document.querySelector("#rejectionTable tbody");
+    rejectionItems.forEach((label, idx) => {
+      const cells = [1,2,3,4,5].map(v => `<td><input type="radio" name="rej_${idx+1}" value="${v}" /></td>`).join("");
+      rejTbody.innerHTML += `<tr><td class="item-col">${label}</td>${cells}</tr>`;
+    });
+
+    let currentStep = 1;
+    const totalSteps = 7;
+
+    function updateProgress(step) {
+      const pct = Math.min(100, Math.round((step / totalSteps) * 100));
+      document.getElementById("progressBar").style.width = pct + "%";
+      document.getElementById("stepIndicator").textContent = step <= totalSteps ? `${step} / ${totalSteps} 단계` : "완료";
+    }
+    updateProgress(1);
+
+    function showStep(n) {
+      document.querySelectorAll(".step").forEach(el => el.classList.remove("active"));
+      const target = n === "Done" ? document.getElementById("stepDone") : document.getElementById("step" + n);
+      target.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      updateProgress(n === "Done" ? totalSteps : n);
+    }
+
+    function prevStep(n) {
+      currentStep = n - 1;
+      showStep(currentStep);
+    }
+
+    function getRadio(name) {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : null;
+    }
+
+    function nextStep(n) {
+      if (n === 1) {
+        const c = getRadio("consent");
+        if (!c) { document.getElementById("err1").style.display = "block"; return; }
+        document.getElementById("err1").style.display = "none";
+        if (c === "disagree") {
+          alert("연구 참여에 동의하지 않으셨으므로 설문을 종료합니다.");
+          return;
+        }
+      }
+      if (n === 2) {
+        const gender = getRadio("gender");
+        const age = document.getElementById("age").value;
+        const orientation = getRadio("orientation");
+        const exp = getRadio("counseling_exp");
+        if (!gender || !age || !orientation || !exp) {
+          document.getElementById("err2").style.display = "block"; return;
+        }
+        document.getElementById("err2").style.display = "none";
+
+        if (gender !== "시스젠더 남성" || orientation !== "동성애") {
+          alert("본 연구는 시스젠더 남성 동성애자(게이)를 대상으로 진행되므로 설문을 종료합니다. 참여에 관심을 가져주셔서 감사합니다.");
+          document.querySelectorAll(".step").forEach(el => el.classList.remove("active"));
+          document.getElementById("stepDone").classList.add("active");
+          document.getElementById("stepDone").innerHTML = `
+            <span class="badge" style="background:#fef2f2; color:#dc2626;">설문 종료</span>
+            <h2>참여 대상 기준 안내</h2>
+            <p>본 연구는 시스젠더 남성 동성애자(게이)를 대상으로 진행되어, 응답해 주신 기준에 따라 설문이 종료되었습니다.</p>
+            <p class="muted">소중한 시간을 내어 관심을 가져주셔서 감사합니다.</p>
+          `;
+          return;
+        }
+      }
+      if (n === 4) {
+        if (!getRadio("check_content") || !getRadio("manip_check")) {
+          document.getElementById("err4").style.display = "block"; return;
+        }
+        document.getElementById("err4").style.display = "none";
+      }
+      if (n === 5) {
+        for (let i = 1; i <= 12; i++) {
+          if (getRadio(`out_${i}`) === null) { document.getElementById("err5").style.display = "block"; return; }
+        }
+        document.getElementById("err5").style.display = "none";
+      }
+      if (n === 6) {
+        for (let i = 1; i <= 8; i++) {
+          if (!getRadio(`disc_${i}`)) { document.getElementById("err6").style.display = "block"; return; }
+        }
+        document.getElementById("err6").style.display = "none";
+      }
+      currentStep = n + 1;
+      showStep(currentStep);
+    }
+
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwp1WIYG8TV9-IvXLpbTz-1VrQmnf3NGM9flxQe6Lw5xGMpGltWW8vjrMCPWRpH6zCs/exec";
+
+    let finalRecord = null;
+    async function submitSurvey() {
+      for (let i = 1; i <= 15; i++) {
+        if (!getRadio(`rej_${i}`)) { document.getElementById("err7").style.display = "block"; return; }
+      }
+      document.getElementById("err7").style.display = "none";
+
+      finalRecord = {
+        timestamp: new Date().toISOString(),
+        assigned_scenario: assignedScenario,
+        gender: getRadio("gender"),
+        age: document.getElementById("age").value,
+        orientation: getRadio("orientation"),
+        counseling_exp: getRadio("counseling_exp"),
+        check_content: getRadio("check_content"),
+        manip_check: getRadio("manip_check")
+      };
+      for (let i = 1; i <= 12; i++) finalRecord[`out_${i}`] = getRadio(`out_${i}`);
+      for (let i = 1; i <= 8; i++) finalRecord[`disc_${i}`] = getRadio(`disc_${i}`);
+      for (let i = 1; i <= 15; i++) finalRecord[`rej_${i}`] = getRadio(`rej_${i}`);
+
+      let sheetStatus = "미연동 (CSV 다운로드 가능)";
+      if (GOOGLE_SCRIPT_URL) {
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(finalRecord)
+          });
+          sheetStatus = "Google Sheets에 전송 완료";
+        } catch (err) {
+          sheetStatus = "Google Sheets 전송 실패 (CSV로 백업하세요)";
+        }
+      }
+
+      document.getElementById("summaryBox").innerHTML = `
+        <strong>할당된 시나리오:</strong> 상담자 ${assignedScenario}<br>
+        <strong>제출 시각:</strong> ${new Date().toLocaleString("ko-KR")}<br>
+        <strong>저장 상태:</strong> ${sheetStatus}
+      `;
+      showStep("Done");
+    }
+
+    function downloadCSV() {
+      if (!finalRecord) return;
+      const headers = Object.keys(finalRecord);
+      const values = headers.map(h => `"${String(finalRecord[h]).replace(/"/g, '""')}"`);
+      const csv = "\uFEFF" + headers.join(",") + "\n" + values.join(",") + "\n";
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `survey_response_${assignedScenario}_${Date.now()}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
