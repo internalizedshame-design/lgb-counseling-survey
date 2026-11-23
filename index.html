@@ -81,6 +81,44 @@
       line-height: 1.85;
       color: #1e293b;
     }
+    .scale-legend-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin: 16px 0 22px;
+    }
+    @media (max-width: 640px) {
+      .scale-legend-grid { grid-template-columns: 1fr; }
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #334155;
+    }
+    .legend-num {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .legend-na .legend-num {
+      background: #e2e8f0;
+      color: #475569;
+    }
     .q-block {
       padding: 20px 0;
       border-bottom: 1px solid var(--border);
@@ -314,15 +352,15 @@
       <span class="badge">척도 1</span>
       <h2>3. 드러내기 척도</h2>
       <p>다음에 제시된 사람들에게 어느 정도로 커밍아웃 했는지 표시해 주십시오. 되도록 모든 질문에 답하여 주십시오. 만약 해당 사항이 없으면, <strong>0</strong>으로 표시하시면 됩니다.</p>
-      <div class="scale-legend">
-        <strong>1</strong> = 내 성적 지향에 대해 전혀 모른다 &nbsp;|&nbsp;
-        <strong>2</strong> = 알지도 모르지만 이야기해 본 적 전혀 없음 &nbsp;|&nbsp;
-        <strong>3</strong> = 아마 알고 있을 것 같지만 이야기해 본 적 전혀 없음 &nbsp;|&nbsp;
-        <strong>4</strong> = 아마 알고 있을 것이지만 이야기해 본 적 거의 없음 &nbsp;|&nbsp;
-        <strong>5</strong> = 확실히 알고 있지만 거의 이야기하지 않음 &nbsp;|&nbsp;
-        <strong>6</strong> = 확실히 알고 있으며 가끔 이야기함 &nbsp;|&nbsp;
-        <strong>7</strong> = 확실히 알고 있으며 자유롭게 이야기할 수 있음 &nbsp;|&nbsp;
-        <strong>0</strong> = 해당사항 없음
+      <div class="scale-legend-grid">
+        <div class="legend-item"><span class="legend-num">1</span><span>내 성적 지향에 대해 전혀 모른다</span></div>
+        <div class="legend-item"><span class="legend-num">2</span><span>알지도 모르지만 이야기해 본 적 전혀 없음</span></div>
+        <div class="legend-item"><span class="legend-num">3</span><span>아마 알고 있을 것 같지만 이야기해 본 적 전혀 없음</span></div>
+        <div class="legend-item"><span class="legend-num">4</span><span>아마 알고 있을 것이지만 이야기해 본 적 거의 없음</span></div>
+        <div class="legend-item"><span class="legend-num">5</span><span>확실히 알고 있지만 거의 이야기하지 않음</span></div>
+        <div class="legend-item"><span class="legend-num">6</span><span>확실히 알고 있으며 가끔 이야기함</span></div>
+        <div class="legend-item"><span class="legend-num">7</span><span>확실히 알고 있으며 자유롭게 이야기할 수 있음</span></div>
+        <div class="legend-item legend-na"><span class="legend-num">0</span><span>해당사항 없음</span></div>
       </div>
       <table class="scale-table" id="outnessTable">
         <thead>
